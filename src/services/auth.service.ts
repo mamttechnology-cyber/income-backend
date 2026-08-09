@@ -94,7 +94,7 @@ export const authService = {
     const token = generateSecureToken();
     await tokenRepository.storeResetToken(user.user_id, hashToken(token), addMinutes(30));
 
-    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:5173" || "https://income-fronend-gkypg158u-mamttechnology-2682s-projects.vercel.app"}/reset-password?token=${token}`;
+    const resetLink = `${process.env.FRONTEND_URL || "http://localhost:5173" || "https://income-fronend-gkypg158u-mamttechnology-2682s-projects.vercel.app/api"}/reset-password?token=${token}`;
     await notificationService.send({
       userId: user.user_id,
       templateCode: "PASSWORD_RESET_EMAIL",
