@@ -20,7 +20,31 @@ import webhookRoutes from "./routes/webhook.routes";
 const app = express();
 
 app.use(helmet());
-app.use(cors({ origin: env.frontendUrl, credentials: true }));
+// app.use(cors({ origin: env.frontendUrl, credentials: true }));
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://income-fronend-gkypg158u-mamttechnology-2682s-projects.vercel.app",
+  env.frontendUrl,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests without an Origin header
+      // (Postman, server-to-server requests, etc.)
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 app.use(express.json({ limit: "2mb" }));
 app.use(generalRateLimit);
 
